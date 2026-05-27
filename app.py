@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from fpdf import FPDF
 import base64
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 st.set_page_config(page_title="Quotation Generator", layout="wide")
 
@@ -10,6 +10,8 @@ EXCEL_FILE = "master_cost_sheet.xlsx"
 USERS_FILE = "users.xlsx"
 LOGO_FILE = "logo.png"
 BRAND_HEX = "#B3202A"
+
+IST = timezone(timedelta(hours=5, minutes=30))
 
 
 def hex_to_rgb(hex_color):
@@ -356,7 +358,7 @@ if not st.session_state.quotation_generated:
         selected = floor_df[floor_df["FLAT NO."] == flat].iloc[0]
         st.session_state.selected_data = selected
         st.session_state.quotation_generated = True
-        st.session_state.quotation_time = datetime.now()
+        st.session_state.quotation_time = datetime.now(IST)
         st.rerun()
 else:
     if st.button("Clear All Data / New Quotation", use_container_width=True):
